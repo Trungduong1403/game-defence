@@ -43,6 +43,22 @@ export default function GamePage() {
   // Keep userRef in sync with state
   useEffect(() => { userRef.current = user; }, [user]);
 
+  // Sync logged-in username into the player name input
+  useEffect(() => {
+    const input = document.getElementById('input-player-name') as HTMLInputElement | null;
+    if (!input) return;
+    if (user) {
+      input.value = user.username;
+      input.readOnly = true;
+      input.style.color = '#ffd700';
+      input.title = 'Logged in as ' + user.username;
+    } else {
+      input.readOnly = false;
+      input.style.color = '';
+      input.title = '';
+    }
+  }, [user]);
+
   // Restore session from localStorage
   useEffect(() => {
     try {
@@ -201,8 +217,7 @@ export default function GamePage() {
     const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
     const ctx2d  = canvas.getContext('2d')!;
     let unlockedMaps = parseInt(localStorage.getItem('tb_unlocked') || '0') || 0;
-    unlockedMaps = 34;
-    let playerName = 'Guest', gameTime = 0, currentMapIdx = 0, gameState = 'MENU';
+    let playerName = 'Guest1', gameTime = 0, currentMapIdx = 0, gameState = 'MENU';
     let gold = CFG.START_GOLD, hp = CFG.MAX_HP, wave = 0;
     let gameSpeedMultiplier = 1, isPaused = false;
     let grid: number[][] = [], mapObstacles: any[] = [];
@@ -918,8 +933,22 @@ export default function GamePage() {
 
     document.getElementById('btn-start-game')!.onclick=()=>{
       AudioSys.init();
-      playerName=(document.getElementById('input-player-name') as HTMLInputElement).value.trim()||'Guest';
-      (document.getElementById('ui-player-name')!).innerText=playerName;
+      const u = userRef.current;
+      if (u) {
+        playerName = u.username;
+      } else {
+        const typed = (document.getElementById('input-player-name') as HTMLInputElement).value.trim();
+        const isDefaultGuest = !typed || /^Guest\d*$/.test(typed);
+        if (isDefaultGuest) {
+          const gn = (parseInt(localStorage.getItem('tb_guest_num') || '0') + 1);
+          localStorage.setItem('tb_guest_num', String(gn));
+          playerName = `Guest${gn}`;
+          (document.getElementById('input-player-name') as HTMLInputElement).value = playerName;
+        } else {
+          playerName = typed;
+        }
+      }
+      (document.getElementById('ui-player-name')!).innerText = playerName;
       startGame(currentMapIdx);
     };
     document.getElementById('btn-back-menu')!.onclick=()=>{gameState='MENU';document.getElementById('main-menu')!.style.display='flex';};
@@ -1149,25 +1178,4 @@ export default function GamePage() {
           <div id="result-screen" style={{ display: 'none' }}>
             <div id="result-title" style={{ color: '#2ecc71' }}>VICTORY</div>
             <div id="result-player">Player: Guest</div>
-            <div id="result-time-disp">Clear Time: 00:00</div>
-            <div id="result-stars">⭐⭐⭐</div>
-            {/* Login-to-save hint */}
-            <div id="result-login-hint" style={{ display: 'none', color: '#f39c12', fontFamily: "'VT323', monospace", fontSize: 20, marginBottom: 8 }}>
-              👤 <span style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                onClick={() => { setShowAuth(true); setAuthError(''); }}>
-                Login to save your score to the leaderboard!
-              </span>
-            </div>
-            <div>
-              <button id="res-btn-menu" className="res-btn btn-menu">Main Menu</button>
-              <button id="res-btn-retry" className="res-btn btn-retry">Retry</button>
-              <button id="res-btn-next" className="res-btn btn-next">Next Map</button>
-            </div>
-          </div>
-
-          <div id="toast" className="toast" style={{ opacity: 0 }} />
-        </div>
-      </div>
-    </>
-  );
-}
+     

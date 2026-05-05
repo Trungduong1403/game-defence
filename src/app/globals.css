@@ -68,29 +68,26 @@ body, html {
 select { color: #fff; cursor: pointer; }
 
 .map-grid {
-  display: flex; gap: 10px; width: 800px;
-  overflow-x: auto; padding: 15px 10px;
-  justify-content: flex-start;
-  scrollbar-width: thin;
+  display: flex; gap: 6px; width: 100%;
+  overflow-x: hidden; padding: 10px 8px;
+  justify-content: center;
   border-top: 1px solid #444; border-bottom: 1px solid #444;
   margin-bottom: 15px;
 }
-.map-grid::-webkit-scrollbar { height: 8px; }
-.map-grid::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
 
 .map-btn {
-  flex-shrink: 0; background: var(--btn-bg); border: 2px solid var(--border-color); color: #ccc;
-  padding: 10px; cursor: pointer; border-radius: 5px;
-  font-family: 'VT323', monospace; font-size: 16px;
-  width: 140px; display: flex; flex-direction: column;
+  flex: 1; min-width: 0; background: var(--btn-bg); border: 2px solid var(--border-color); color: #ccc;
+  padding: 8px 4px; cursor: pointer; border-radius: 5px;
+  font-family: 'VT323', monospace; font-size: 14px;
+  display: flex; flex-direction: column;
   align-items: center; justify-content: center; text-align: center;
   transition: 0.1s;
 }
 .map-btn:hover:not(.locked) { background: var(--btn-hover); border-color: #888; transform: translateY(-2px); }
 .map-btn.selected { border-color: var(--gold); background: #5a4a1a; color: white; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
 .map-btn.locked { opacity: 0.3; cursor: not-allowed; }
-.map-btn .map-num { font-size: 22px; font-weight: bold; margin-bottom: 5px; color: var(--gold); }
-.map-btn .map-name { font-size: 14px; line-height: 1.2; }
+.map-btn .map-num { font-size: 18px; font-weight: bold; margin-bottom: 3px; color: var(--gold); }
+.map-btn .map-name { font-size: 11px; line-height: 1.2; word-break: break-word; }
 
 .btn-large {
   font-family: 'Press Start 2P', cursive; background: #27ae60; color: white;
@@ -265,3 +262,4 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
   80%  { opacity: 1; }
   100% { opacity: 0; }
 }
+                                                                                                                                                    
