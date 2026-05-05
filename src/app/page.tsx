@@ -1178,4 +1178,25 @@ export default function GamePage() {
           <div id="result-screen" style={{ display: 'none' }}>
             <div id="result-title" style={{ color: '#2ecc71' }}>VICTORY</div>
             <div id="result-player">Player: Guest</div>
-     
+            <div id="result-time-disp">Clear Time: 00:00</div>
+            <div id="result-stars">⭐⭐⭐</div>
+            {/* Login-to-save hint */}
+            <div id="result-login-hint" style={{ display: 'none', color: '#f39c12', fontFamily: "'VT323', monospace", fontSize: 20, marginBottom: 8 }}>
+              👤 <span style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                onClick={() => { setShowAuth(true); setAuthError(''); }}>
+                Login to save your score to the leaderboard!
+              </span>
+            </div>
+            <div>
+              <button id="res-btn-menu" className="res-btn btn-menu">Main Menu</button>
+              <button id="res-btn-retry" className="res-btn btn-retry">Retry</button>
+              <button id="res-btn-next" className="res-btn btn-next">Next Map</button>
+            </div>
+          </div>
+
+          <div id="toast" className="toast" style={{ opacity: 0 }} />
+        </div>
+      </div>
+    </>
+  );
+}
